@@ -1065,6 +1065,17 @@ class Input(object):
             likelihood_kwargs.pop("time_marginalization", None)
             likelihood_kwargs.pop("jitter_time", None)
             likelihood_kwargs.update(self.roq_likelihood_kwargs)
+        elif self.likelihood_type == "RelativeBinningGravitationalWaveTransient":
+            Likelihood = bilby.gw.likelihood.RelativeBinningGravitationalWaveTransient
+
+            if self.time_marginalization:
+                logger.warning(
+                    "Time marginalization not implemented for "
+                    "RelativeBinningGravitationalWaveTransient: option ignored"
+                )
+                
+            likelihood_kwargs.pop("time_marginalization", None)
+            likelihood_kwargs.pop("jitter_time", None)
         elif "." in self.likelihood_type:
             split_path = self.likelihood_type.split(".")
             module = ".".join(split_path[:-1])
